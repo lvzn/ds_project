@@ -1,0 +1,9 @@
+ansiwrap==0.8.4
+console-menu==0.8.0
+msgpack==1.0.5
+pycodestyle==2.10.0
+pyzmq==25.0.2
+six==1.16.0
+textwrap3==0.9.2
+tomli==2.0.1
+zeroapi==0.3.60
