@@ -1,6 +1,8 @@
 from consolemenu import *
 from consolemenu.items import *
 from zero import ZeroClient
+from datetime import date
+import time
 
 
 zero_client = ZeroClient("localhost", 8888)
@@ -13,8 +15,8 @@ class RpcClient:
     def read_data(self, username):
         return self._zero_client.call("read_from_db", username)
 
-    def hello_world(self):
-        return self._zero_client.call("hello_world", None)
+    def write_data(self, data):
+        return self._zero_client.call("post_train_data", data)
 
     def register(self, credentials):
         return self._zero_client.call("create_new_user", credentials)
@@ -22,10 +24,48 @@ class RpcClient:
     def login(self, credentials):
         return self._zero_client.call("authenticate", credentials)
 
+    def edit(self, data):
+        return self._zero_client.call("edit_train_data", data)
+
+    def delete(self, info):
+        return self._zero_client.call('delete_data', info)
+
+
+def add_data(id):
+    data = {
+        'user_id': id,
+        'pushups': input("Give the number of pushups you want to record: ")
+    }
+    print(rpc_client.write_data(data))
+
+
+def edit_data(id):
+    pass
+
+
+def read_data(id):
+    pass
+
+
+def delete_data(id):
+    user_id = input(
+        "ID of the user whose data will be deleted (leave empty if you want to delete your own): ")
+    if user_id.strip() == '':
+        print(rpc_client.delete({'identifier': id, 'type': 'user'}))
+        time.sleep(2)
+    else:
+        print(rpc_client.delete({'identifier': user_id, 'type': 'user'}))
+        time.sleep(2)
+
 
 def main_menu(user_id):
-    pass
-    # TODO: main functionality
+    menu = ConsoleMenu("Database interface", exit_option_text='Back to login')
+    menu.append_item(FunctionItem("Add data", add_data, [user_id]))
+    menu.append_item(FunctionItem("Edit data", edit_data, [user_id]))
+    menu.append_item(FunctionItem("Read data", read_data, [user_id]))
+    menu.append_item(FunctionItem("Delete data", delete_data, [user_id]))
+    menu.show()
+    time.sleep(20)
 
 
 def register():
@@ -42,7 +82,12 @@ def login():
         'password': input("Password: ")
     }
     res = rpc_client.login(credentials)
+    if res["status"] == 1:
+        print(res["msg"])
+        time.sleep(2)
+        return
     print(res['msg'])
+    time.sleep(2)
     main_menu(res['id'])
 
 
