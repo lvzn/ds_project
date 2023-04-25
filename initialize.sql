@@ -1,5 +1,5 @@
 drop table if exists users;
-CREATE table users(
+CREATE table person(
     id integer primary key autoincrement,
     username text unique not null,
     password text --no authentication
@@ -10,7 +10,7 @@ CREATE TABLE sports_data(
     user int not null,
     pushups int not null,
     submitdate datetime not null,
-    foreign key (user) references users (id)
+    foreign key (user) references person (id)
 );
-insert into users
+insert into person
 values (0, "admin", "admin")
