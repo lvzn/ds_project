@@ -6,9 +6,12 @@ import sqlite3
 
 async def create_new_user(credentials: list[str]) -> str:
     query = 'insert into person (id, username, password) values(?,?,?)'
-    cursor.execute(query, (None, credentials[0], credentials[1]))
-    conn.commit()
-    return 'Registering successful'
+    try:
+        cursor.execute(query, (None, credentials[0], credentials[1]))
+        conn.commit()
+        return 'Registering successful'
+    except:
+        return 'An error occured'
 
 
 async def authenticate(credentials: list[str]) -> int:
@@ -46,12 +49,12 @@ async def edit_train_data(data: dict[str | int]) -> str:
     set pushups = ?
     where id = ?
     '''
-    try:
-        cursor.execute(query, (data['pushups'], data['id']))
-        conn.commit()
-        return 'Data update successful'
-    except:
-        return 'Data update failed'
+    cursor.execute(query, (data['pushups'], data['id']))
+    conn.commit()
+    cursor.execute('select changes()')
+    rows = cursor.fetchone()
+
+    return f'Data update successful, {rows[0]} rows affected'
 
 
 async def read_from_db(username: str) -> list[str | int] or str:
@@ -64,7 +67,7 @@ async def read_from_db(username: str) -> list[str | int] or str:
     '''
     try:
         cursor.execute(query, (username, ))
-        data = cursor.fetchone()
+        data = cursor.fetchall()
         return data
     except:
         return 'Fetching data failed'
