@@ -12,5 +12,10 @@ CREATE TABLE sports_data(
     submitdate datetime not null,
     foreign key (user) references person (id)
 );
+create table visualize_queue(
+    id integer primary key autoincrement,
+    user int not null,
+    foreign key (user) references person (id)
+);
 insert into person
 values (0, "admin", "admin")

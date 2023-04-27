@@ -44,7 +44,8 @@ def add_data(id):
 def edit_data(id):
     data = {
         'id': input("Give the id of the row you want to edit: "),
-        'pushups': input("Give the number of pushups you want to set on this row: ")
+        'pushups': input("Give the number of pushups you want to set on this row: "),
+        'user_id': id
     }
     print(rpc_client.edit(data))
     time.sleep(2)

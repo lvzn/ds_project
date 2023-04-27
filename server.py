@@ -37,6 +37,9 @@ async def post_train_data(data: dict[str | int]) -> str:
     try:
         cursor.execute(
             query, (None, data['user_id'], data['pushups']))
+        # conn.commit()
+        cursor.execute(
+            'insert into visualize_queue values (?, ?)', (None, data['user_id']))
         conn.commit()
         return 'Data added'
     except:
@@ -53,7 +56,9 @@ async def edit_train_data(data: dict[str | int]) -> str:
     conn.commit()
     cursor.execute('select changes()')
     rows = cursor.fetchone()
-
+    cursor.execute(
+        'insert into visualize_queue values (?, ?)', (None, data['user_id']))
+    conn.commit()
     return f'Data update successful, {rows[0]} rows affected'
 
 
