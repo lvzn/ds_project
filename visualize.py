@@ -54,7 +54,7 @@ class Visualizer:
                 pushups.append(t[0])
                 dates.append(t[1])
         p = figure(x_range=dates, height=350, title="Pushups by date")
-        p.vbar(x=dates, top=pushups, width=1)
+        p.vbar(x=dates, top=pushups, width=0.8)
         cursor.execute('select username from person where id = ?', (user[0],))
         username = cursor.fetchone()
         with open(f'visualisations/{username[0]}_graph.html', 'w') as f:
