@@ -15,6 +15,11 @@ Now you should be able to run the services:
     python3 server.py &
     python3 visualize.py &
     python3 client.py
-    
+
+NOTE: make sure to run these commands in the virtual environment, `env/bin/activate` before running these commands.
+
 This will make server and visualize services run in background. 
 
+# Prerequisites
+ - sqlite3
+ - python
